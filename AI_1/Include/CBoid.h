@@ -13,7 +13,7 @@ public:
 	CVector pursue(float time, CVector target);
 	CVector evade(float time, CVector target);
 	CVector arrive();
-	CVector wanderRandom();
+	CVector wanderRandom(float magnitude);
 	CVector wanderDirectional();
 	CVector followPath();
 	CVector patrol();

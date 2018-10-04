@@ -1,4 +1,5 @@
 #include "..\Include\CBoid.h"
+#include <random>
 
 CBoid::CBoid()
 {
@@ -66,5 +67,20 @@ CVector CBoid::evade(float time, CVector target)
 	{
 		radius = magnitudMaxima;
 	}
+
+}
+
+CVector CBoid::wanderRandom(float magnitude)
+{
+	std::default_random_engine generator;
+	std::binomial_distribution<int> value(-1, 1);
+
+	float Xvalue = value(generator);
+	float Yvalue = value(generator);
+	CVector target;
+	target.setValueX(Xvalue);
+    target.setValueY(Yvalue);
+	target.normalize();
+	return target * magnitude;
 
 }
