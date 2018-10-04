@@ -19,3 +19,27 @@ CVector CBoid::flee(float fleeForce, CVector target)
 	CVector res;
 	return res = (target - this->position()).normalize() * fleeForce;
 }
+
+CVector CBoid::pursue(float time, CVector target)
+{
+	CVector prediccion;
+	CVector direction;
+	float distance;
+	float velocity;
+	float magnitudMaxima;
+
+	direction = target - this->position();
+	distance = direction.magnitude();
+	velocity = distance / time;
+	magnitudMaxima = velocity * time;
+
+	if (distance > magnitudMaxima)
+	{
+		prediccion = target + (direction * magnitudMaxima);
+	}
+	else
+	{
+		prediccion = target + (direction * distance);
+	}
+
+}

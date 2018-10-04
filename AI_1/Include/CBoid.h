@@ -10,7 +10,7 @@ public:
 	~CBoid();
 	CVector seek(float seekForce, CVector target);
 	CVector flee(float fleeForce, CVector target);
-	CVector pursue();
+	CVector pursue(float time, CVector target);
 	CVector arrive();
 	CVector wanderRandom();
 	CVector wanderDirectional();

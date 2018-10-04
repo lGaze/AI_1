@@ -40,7 +40,10 @@ public:
 	 * Overload operator *
 	 */
 	CVector operator*(float val);
-
+	/**
+	 * Overload operator +
+	 */
+	CVector operator+(CVector val);
 private:
 
 	float m_X;

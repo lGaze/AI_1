@@ -58,3 +58,11 @@ CVector CVector::operator*(float val)
 	res.setValueY(this->getValueY() * val);
 	return res;
 }
+
+CVector CVector::operator+(CVector val)
+{
+	CVector res;
+	res.setValueX(this->getValueX() + val.getValueX());
+	res.setValueY(this->getValueY() + val.getValueY());
+	return res;
+}
