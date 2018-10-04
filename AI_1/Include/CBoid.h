@@ -12,7 +12,7 @@ public:
 	CVector flee(float fleeForce, CVector target);
 	CVector pursue(float time, CVector target);
 	CVector evade(float time, CVector target);
-	CVector arrive();
+	CVector arrive(float radius, float magnitude, CVector target);
 	CVector wanderRandom(float magnitude);
 	CVector wanderDirectional();
 	CVector followPath();

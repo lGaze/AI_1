@@ -70,6 +70,27 @@ CVector CBoid::evade(float time, CVector target)
 
 }
 
+CVector CBoid::arrive(float radius, float magnitude, CVector target)
+{
+
+	float distance;
+	CVector force;
+
+	distance = (target - this->position()).magnitude();
+	force = seek(magnitude, target);
+
+	if (distance < radius)
+	{
+		force = force + ((target - this->position())*(distance / radius)*magnitude);
+	}
+	else
+	{
+
+	}
+	
+	return force;
+}
+
 CVector CBoid::wanderRandom(float magnitude)
 {
 	std::default_random_engine generator;
