@@ -9,7 +9,7 @@ public:
 	CBoid();
 	~CBoid();
 	CVector seek(float seekForce, CVector target);
-	CVector flee();
+	CVector flee(float fleeForce, CVector target);
 	CVector pursue();
 	CVector arrive();
 	CVector wanderRandom();
