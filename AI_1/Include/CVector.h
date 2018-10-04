@@ -32,7 +32,15 @@ public:
 	 * Returns a normalized Vector.
 	 */
 	CVector normalize();
-	
+	/**
+	 * Overload operator -
+	 */
+	CVector operator-(CVector val);
+	/**
+	 * Overload operator *
+	 */
+	CVector operator*(float val);
+
 private:
 
 	float m_X;

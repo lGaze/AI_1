@@ -8,7 +8,7 @@ public:
 
 	CBoid();
 	~CBoid();
-	CVector seek();
+	CVector seek(float seekForce, CVector target);
 	CVector flee();
 	CVector pursue();
 	CVector arrive();

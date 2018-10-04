@@ -42,3 +42,19 @@ CVector CVector::normalize()
 	normalized.setValueY(this->getValueY() / this->magnitude());
 	return normalized;
 }
+
+CVector CVector::operator-(CVector val)
+{
+	CVector res;
+	res.setValueX(this->getValueX() - val.getValueX());
+	res.setValueY(this->getValueY() - val.getValueY());
+	return res;
+}
+
+CVector CVector::operator*(float val)
+{
+	CVector res;
+	res.setValueX(this->getValueX() * val);
+	res.setValueY(this->getValueY() * val);
+	return res;
+}
