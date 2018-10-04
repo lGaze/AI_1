@@ -42,4 +42,29 @@ CVector CBoid::pursue(float time, CVector target)
 		prediccion = target + (direction * distance);
 	}
 
+	return prediccion;
+}
+
+CVector CBoid::evade(float time, CVector target)
+{
+	CVector direction;
+	float distance;
+	float velocity;
+	float magnitudMaxima;
+	float radius;
+
+	direction = target - this->position();
+	distance = direction.magnitude();
+	velocity = distance / time;
+	magnitudMaxima = velocity * time;
+
+	if (distance < magnitudMaxima)
+	{
+		radius = distance;
+	}
+	else
+	{
+		radius = magnitudMaxima;
+	}
+
 }
