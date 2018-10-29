@@ -120,4 +120,6 @@ CVector CBoid::wanderDirectional(float distance, float radius, float visionAngle
 
 	//PF = PP + (Dir*r)
 	//N (PF-P)
+
+	return projectedPoint;
 }
