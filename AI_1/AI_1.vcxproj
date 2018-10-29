@@ -115,6 +115,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Include\CBoid.h" />
+    <ClInclude Include="Include\CGameObject.h" />
+    <ClInclude Include="Include\CVector.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\CBoid.cpp" />
+    <ClCompile Include="Source\CGameObject.cpp" />
+    <ClCompile Include="Source\CVector.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -8,16 +8,17 @@ public:
 
 	CBoid();
 	~CBoid();
-	CVector seek(float seekForce, CVector target);
-	CVector flee(float fleeForce, CVector target);
-	CVector pursue(float time, CVector target);
-	CVector evade(float time, CVector target);
-	CVector arrive(float radius, float magnitude, CVector target);
+	CVector seek(CVector target, float seekForce);
+	CVector flee(CVector target, float fleeForce);
+	CVector pursue(CVector target, float time);
+	CVector evade(CVector target, float time);
+	CVector arrive(CVector target, float radius, float magnitude);
 	CVector wanderRandom(float magnitude);
-	CVector wanderDirectional();
+	CVector wanderDirectional(float distance, float radius, float visionAngle, float magitude);
 	CVector followPath();
 	CVector patrol();
 
 private:
 
+	CVector m_Dir;
 };

@@ -9,25 +9,25 @@ CBoid::~CBoid()
 {
 }
 
-CVector CBoid::seek(float SeekForce, CVector target)
+CVector CBoid::seek(CVector target, float seekForce)
 {
 	CVector res;
-	return res = (this->position() - target).normalize() * SeekForce;
+	return res = (this->position() - target).normalize() * seekForce;
 }
 
-CVector CBoid::flee(float fleeForce, CVector target)
+CVector CBoid::flee(CVector target, float fleeForce)
 {
 	CVector res;
 	return res = (target - this->position()).normalize() * fleeForce;
 }
 
-CVector CBoid::pursue(float time, CVector target)
+CVector CBoid::pursue(CVector target, float time)
 {
-	CVector prediccion;
+	CVector prediction;
 	CVector direction;
-	float distance;
-	float velocity;
-	float magnitudMaxima;
+	float distance = 0;
+	float velocity = 0;
+	float magnitudMaxima = 0;
 
 	direction = target - this->position();
 	distance = direction.magnitude();
@@ -36,23 +36,24 @@ CVector CBoid::pursue(float time, CVector target)
 
 	if (distance > magnitudMaxima)
 	{
-		prediccion = target + (direction * magnitudMaxima);
+		prediction = target + (direction * magnitudMaxima);
 	}
 	else
 	{
-		prediccion = target + (direction * distance);
+		prediction = target + (direction * distance);
 	}
 
-	return prediccion;
+	return prediction;
 }
 
-CVector CBoid::evade(float time, CVector target)
+CVector CBoid::evade(CVector target, float time)
 {
 	CVector direction;
-	float distance;
-	float velocity;
-	float magnitudMaxima;
-	float radius;
+	CVector prediction;
+	float distance = 0;
+	float velocity = 0;
+	float magnitudMaxima = 0;
+	float radius = 0;
 
 	direction = target - this->position();
 	distance = direction.magnitude();
@@ -68,26 +69,28 @@ CVector CBoid::evade(float time, CVector target)
 		radius = magnitudMaxima;
 	}
 
+	prediction = target + (direction * radius);
+	CVector predictionToMe = prediction - this->position();
+	CVector result = direction + predictionToMe;
+	return result;
 }
 
-CVector CBoid::arrive(float radius, float magnitude, CVector target)
+CVector CBoid::arrive(CVector target, float radius, float magnitude)
 {
 
-	float distance;
+	CVector direction;
 	CVector force;
+	float distance;
 
-	distance = (target - this->position()).magnitude();
-	force = seek(magnitude, target);
+	direction = (target - this->position()).normalize();
+	distance = direction.magnitude();
+	force = seek(target,magnitude);
 
 	if (distance < radius)
 	{
-		force = force + ((target - this->position())*(distance / radius)*magnitude);
+		force = force + (direction*(distance / radius)*magnitude);
 	}
-	else
-	{
 
-	}
-	
 	return force;
 }
 
@@ -104,4 +107,17 @@ CVector CBoid::wanderRandom(float magnitude)
 	target.normalize();
 	return target * magnitude;
 
+}
+
+CVector CBoid::wanderDirectional(float distance, float radius, float visionAngle, float magitude)
+{
+	CVector projectedPoint;
+	CVector finalPoint;
+	float force;
+	
+	//NDir.x = cos(0)
+	//NDir.Y = sen(0)
+
+	//PF = PP + (Dir*r)
+	//N (PF-P)
 }

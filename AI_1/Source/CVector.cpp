@@ -38,8 +38,8 @@ float CVector::magnitude()
 CVector CVector::normalize()
 {
 	CVector normalized;
-	normalized.setValueX(this->getValueX() / this->magnitude());
-	normalized.setValueY(this->getValueY() / this->magnitude());
+	normalized.setValueX( m_X / this->magnitude());
+	normalized.setValueY( m_Y / this->magnitude());
 	return normalized;
 }
 
