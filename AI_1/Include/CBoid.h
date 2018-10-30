@@ -18,6 +18,9 @@ public:
 	CVector followPath();
 	CVector patrol();
 
+	inline CVector getDirection() { return m_Dir; };
+	void setDirection(CVector newDirection);
+
 private:
 
 	CVector m_Dir;

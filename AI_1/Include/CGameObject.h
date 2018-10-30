@@ -9,8 +9,10 @@ public:
 
 	CGameObject();
 	~CGameObject();
-	CVector position();
+	CVector getPosition();
+	void setPosition(float posX, float posY);
 
 private:
 
+	CVector m_pos;
 };

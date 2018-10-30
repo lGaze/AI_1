@@ -2,6 +2,14 @@
 
 CVector::CVector()
 {
+	this->m_X = 0.f;
+	this->m_Y = 0.f;
+}
+
+CVector::CVector(float x, float y)
+{
+	this->m_X = x;
+	this->m_Y = y;
 }
 
 CVector::~CVector()
@@ -15,7 +23,7 @@ void CVector::setValueX(float x)
 
 void CVector::setValueY(float y)
 {
-	this->m_X = y;
+	this->m_Y = y;
 }
 
 float CVector::getValueX()
@@ -38,31 +46,31 @@ float CVector::magnitude()
 CVector CVector::normalize()
 {
 	CVector normalized;
-	normalized.setValueX( m_X / this->magnitude());
-	normalized.setValueY( m_Y / this->magnitude());
+	normalized.setValueX( m_X / magnitude());
+	normalized.setValueY( m_Y / magnitude());
 	return normalized;
 }
 
-CVector CVector::operator-(CVector val)
+CVector CVector::operator-(const CVector & val)
 {
 	CVector res;
-	res.setValueX(this->getValueX() - val.getValueX());
-	res.setValueY(this->getValueY() - val.getValueY());
+	res.setValueX(this->m_X - val.m_X);
+	res.setValueY(this->m_Y - val.m_Y);
 	return res;
 }
 
 CVector CVector::operator*(float val)
 {
 	CVector res;
-	res.setValueX(this->getValueX() * val);
-	res.setValueY(this->getValueY() * val);
+	res.setValueX(m_X * val);
+	res.setValueY(m_Y * val);
 	return res;
 }
 
-CVector CVector::operator+(CVector val)
+CVector CVector::operator+(const CVector & val)
 {
 	CVector res;
-	res.setValueX(this->getValueX() + val.getValueX());
-	res.setValueY(this->getValueY() + val.getValueY());
+	res.setValueX(this->m_X + val.m_X);
+	res.setValueY(this->m_Y + val.m_Y);
 	return res;
 }

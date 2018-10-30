@@ -8,7 +8,14 @@ CGameObject::~CGameObject()
 {
 }
 
-CVector CGameObject::position()
+CVector CGameObject::getPosition()
 {
-	return CVector();
+	return m_pos;
+}
+
+void CGameObject::setPosition(float posX, float posY)
+{
+	m_pos.setValueX(m_pos.getValueX() + posX);
+	m_pos.setValueY(m_pos.getValueY() + posY);
+
 }

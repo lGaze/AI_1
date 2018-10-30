@@ -6,6 +6,7 @@ class CVector
 public:
 
 	CVector();
+	CVector(float x, float y);
 	~CVector();
 	
 	/**
@@ -35,7 +36,7 @@ public:
 	/**
 	 * Overload operator -
 	 */
-	CVector operator-(CVector val);
+	CVector operator-(const CVector & val);
 	/**
 	 * Overload operator *
 	 */
@@ -43,8 +44,8 @@ public:
 	/**
 	 * Overload operator +
 	 */
-	CVector operator+(CVector val);
-private:
+	CVector operator+(const CVector & vall);
+	public:
 
 	float m_X;
 	float m_Y;
