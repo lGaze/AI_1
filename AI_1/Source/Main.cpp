@@ -20,7 +20,7 @@ int main()
 	//Boid_1 object
 	CBoid boid_1;
 	CVector StartDir(0.f, 1.f);
-	boid_1.setPosition(10.f,10.f);
+	boid_1.setPosition(400.f, 300.f);
 	boid_1.setDirection(StartDir);
 	
 	//Actor object
@@ -87,7 +87,7 @@ int main()
 
 		//steeringForce = boid_1.arrive(targetVect, 20.f, seekForce);
 		//steeringForce = boid_1.seek(targetVect, seekForce);
-
+		steeringForce = boid_1.flee(targetVect, seekForce);
 		boid_1.Update(deltaTime, steeringForce);
 
 	  /************************************************************************/

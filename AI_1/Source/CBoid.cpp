@@ -23,8 +23,9 @@ CVector CBoid::seek(CVector target, float seekForce)
 
 CVector CBoid::flee(CVector target, float fleeForce)
 {
-	CVector res;
-	return res = (getPosition() - target).getNormalize() * fleeForce;
+	CVector res = m_pos - target;
+	res.Normalize();
+	return res * fleeForce;
 }
 
 CVector CBoid::pursue(CVector target, float time)
