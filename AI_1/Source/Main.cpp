@@ -7,121 +7,98 @@ using namespace std;
 
 int main()
 {
-	//Create the SFML window
-	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Game");
-	window.setFramerateLimit(60);
+	sf::RenderWindow window(sf::VideoMode(800, 600), "Behaviours");
 
-
-	//Actor
-	CBoid boid;
-	sf::CircleShape actor(10.0f);
-
-	//Target
-	sf::CircleShape target(10.0f);
-	CVector vectorTarget;
-
-	//Settings of actor
-	actor.setFillColor(sf::Color::Green);
-	actor.setPosition(sf::Vector2f(10, 10));
-	actor.setOrigin(10.0f, 10.0f);
-	boid.setPosition(actor.getPosition().x, actor.getPosition().y);
-	boid.setDirection(CVector( 0.f,0.f));
-	float steeringForce = 10.f;
-	CVector steering (0,0);
-
-	//Settings of target
-	target.setFillColor((sf::Color::Yellow));
-	target.setPosition(sf::Vector2f(400, 300));
-	vectorTarget.setValueX(target.getPosition().x);
-	vectorTarget.setValueY(target.getPosition().y);
-
-	//Cloack for delta
+	
+	//Clock for delta time
 	sf::Clock clock;
 
+	//Forces
+	CVector steeringForce;
+	float seekForce = 10.f;
 
-	//Program loop
+	//Boid_1 object
+	CBoid boid_1;
+	CVector StartDir(0.f, 1.f);
+	boid_1.setPosition(10.f,10.f);
+	boid_1.setDirection(StartDir);
+	
+	//Actor object
+	sf::CircleShape actor(10.f);
+	actor.setFillColor(sf::Color::Green);
+	actor.setPosition(boid_1.getPosition().X, boid_1.getPosition().Y);
+	actor.setOrigin(sf::Vector2f(10.f, 10.f));
+	
+	//Target object
+	sf::CircleShape target(20.f);
+	target.setFillColor(sf::Color::Red);
+	target.setPosition(500.f, 400.f);
+	CVector targetVect(target.getPosition().x, target.getPosition().y);
+	target.setOrigin(20, 20);
 	while (window.isOpen())
 	{
-		float deltaTime = clock.restart().asSeconds();
+		//Events
+		sf::Event event;
 
-		sf::Event Event;
-		//Close Event
-		while (window.pollEvent(Event))
+		//Program Loop
+		while (window.pollEvent(event))
 		{
 			//Close Event
-			if (Event.type == sf::Event::Closed)
+			if (event.type == sf::Event::Closed)
 			{
 				window.close();
 			}
-			
 
 		}
+
+		float deltaTime = clock.restart().asSeconds();
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
 			// left key is pressed: move our character
-			target.move(5.f, 0.f);
-			vectorTarget.setValueX(target.getPosition().x);
-			vectorTarget.setValueY(target.getPosition().y);
-		}
-
+			target.move(1.f, 0.f);
+			targetVect.setValueX(target.getPosition().x);
+			targetVect.setValueY(target.getPosition().y);
+		}	
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
 			// left key is pressed: move our character
-			target.move(-5.f, 0.f);
-			vectorTarget.setValueX(target.getPosition().x);
-			vectorTarget.setValueY(target.getPosition().y);
+			target.move(-1.f, 0.f);
+			targetVect.setValueX(target.getPosition().x);
+			targetVect.setValueY(target.getPosition().y);
 		}
-
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			// left key is pressed: move our character
-			target.move(0.f, -5.f);
-			vectorTarget.setValueX(target.getPosition().x);
-			vectorTarget.setValueY(target.getPosition().y);
+			target.move(0.f, -1.f);
+			targetVect.setValueX(target.getPosition().x); 
+			targetVect.setValueY(target.getPosition().y);
 		}
-
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
 			// left key is pressed: move our character
-			target.move(0.f, 5.f);
-			vectorTarget.setValueX(target.getPosition().x);
-			vectorTarget.setValueY(target.getPosition().y);
+			target.move(0.f, 1.f);
+			targetVect.setValueX(target.getPosition().x);
+			targetVect.setValueY(target.getPosition().y);
 		}
+		
 
-		CVector newDirection = boid.getDirection();
-		float angle = atan2f(
-			newDirection.m_Y,
-			newDirection.m_X) * 180.f / 3.14159265358979323;
+	  /********************************UPDATE**********************************/
 
+		//steeringForce = boid_1.arrive(targetVect, 20.f, seekForce);
+		//steeringForce = boid_1.seek(targetVect, seekForce);
 
-		CVector posFin = boid.getDirection().normalize() * 50 + boid.getPosition();
-		sf::Vertex line[] = 
-		{
-			sf::Vertex(sf::Vector2f(posFin.m_X, posFin.m_Y)),
-			sf::Vertex(sf::Vector2f(boid.getPosition().m_X, boid.getPosition().m_Y))
-		};
+		boid_1.Update(deltaTime, steeringForce);
 
-		line->color = sf::Color::White;
-
-		steering = steering + boid.seek(vectorTarget, steeringForce) + boid.getDirection() * deltaTime;
-		boid.setDirection(steering.normalize());
-		boid.setPosition(steering.m_X * deltaTime, steering.m_Y * deltaTime);
-		actor.setPosition(boid.getPosition().m_X, boid.getPosition().m_Y);
-		actor.setRotation(angle);
-
-
-
-		//Draw Calls
+	  /************************************************************************/
 		window.clear();
-		window.draw(line, 2, sf::Lines);
-		window.draw(actor);
+
+	  /********************************DRAW************************************/
 		window.draw(target);
+		boid_1.Draw(window, actor);
+	  /************************************************************************/
 		window.display();
-
 	}
-
-	
 
 	return 0;
 }

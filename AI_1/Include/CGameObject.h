@@ -12,7 +12,7 @@ public:
 	CVector getPosition();
 	void setPosition(float posX, float posY);
 
-private:
+protected:
 
 	CVector m_pos;
 };

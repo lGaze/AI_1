@@ -1,5 +1,10 @@
 #include "..\Include\CBoid.h"
 #include <random>
+#include <iostream>
+
+
+constexpr float EPSILON = .001;
+constexpr int MAX_FORCE = 100;
 
 CBoid::CBoid()
 {
@@ -12,13 +17,14 @@ CBoid::~CBoid()
 CVector CBoid::seek(CVector target, float seekForce)
 {
 	CVector res;
-	return res = (target - getPosition()).normalize() * seekForce;
+	res = (target - m_pos).getNormalize();
+	return res * seekForce;
 }
 
 CVector CBoid::flee(CVector target, float fleeForce)
 {
 	CVector res;
-	return res = (getPosition() - target).normalize() * fleeForce;
+	return res = (getPosition() - target).getNormalize() * fleeForce;
 }
 
 CVector CBoid::pursue(CVector target, float time)
@@ -78,34 +84,33 @@ CVector CBoid::evade(CVector target, float time)
 CVector CBoid::arrive(CVector target, float radius, float magnitude)
 {
 
-	CVector direction;
-	CVector force;
-	float distance;
-
-	direction = (target - getPosition()).normalize();
-	distance = direction.magnitude();
-	force = seek(target,magnitude);
+	CVector direction = (target - m_pos);
+	float distance = direction.magnitude();
+	direction.Normalize();
+	direction = direction * magnitude;
 
 	if (distance < radius)
 	{
-		force = force + (direction*(distance / radius)*magnitude);
+		direction = direction * (distance / radius);
 	}
 
-	return force;
+	return direction;
 }
 
-CVector CBoid::wanderRandom(float magnitude)
+CVector CBoid::wanderRandom(int Minimumx , int MAximumx , int Minimumy , int Maximumy ,float magnitude)
 {
-	std::default_random_engine generator;
-	std::binomial_distribution<int> value(-1, 1);
-
-	float Xvalue = value(generator);
-	float Yvalue = value(generator);
+	std::default_random_engine generatorX;
+	std::default_random_engine generatorY;
+	std::uniform_int_distribution<int> valueX(Minimumx,MAximumx);
+	std::uniform_int_distribution<int> valueY(Minimumy,Maximumy);
+	
+	float Xvalue = valueX(generatorX);
+	float Yvalue = valueY(generatorY);
 	CVector target;
 	target.setValueX(Xvalue);
     target.setValueY(Yvalue);
-	target.normalize();
-	return target * magnitude;
+	target.getNormalize();
+	return seek(target,magnitude);
 
 }
 
@@ -128,4 +133,23 @@ void CBoid::setDirection(CVector newDirection)
 {
 	m_Dir.setValueX(newDirection.getValueX());
 	m_Dir.setValueY(newDirection.getValueY());
+}
+
+void CBoid::Update(float deltaTime, CVector steeringForce)
+{
+	CVector NewDirection;
+	CVector NewPos;
+
+	if (steeringForce.magnitude() > EPSILON)
+	{
+		steeringForce.truncate(MAX_FORCE);
+
+		NewDirection = steeringForce + (m_Dir * m_Velocity);
+		NewPos = m_pos + (NewDirection * deltaTime);
+
+		
+/*		NewDirection.Normalize();*/
+		setDirection(NewDirection.getNormalize());
+		setPosition(NewPos.getValueX(), NewPos.getValueY());
+	}
 }

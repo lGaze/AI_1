@@ -15,7 +15,5 @@ CVector CGameObject::getPosition()
 
 void CGameObject::setPosition(float posX, float posY)
 {
-	m_pos.setValueX(m_pos.getValueX() + posX);
-	m_pos.setValueY(m_pos.getValueY() + posY);
-
+	m_pos = CVector(posX, posY);
 }

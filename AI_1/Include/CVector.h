@@ -32,7 +32,9 @@ public:
 	/**
 	 * Returns a normalized Vector.
 	 */
-	CVector normalize();
+	CVector getNormalize();
+
+	void Normalize();
 	/**
 	 * Overload operator -
 	 */
@@ -45,8 +47,17 @@ public:
 	 * Overload operator +
 	 */
 	CVector operator+(const CVector & vall);
+	/**
+	 * 
+	 */
+	CVector operator/(float val);
+	/**
+	 * 
+	 */
+	void truncate(float max);
+
 	public:
 
-	float m_X;
-	float m_Y;
+	float X;
+	float Y;
 };
