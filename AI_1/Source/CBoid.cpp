@@ -50,6 +50,7 @@ CVector CBoid::pursue(CVector target, float time)
 		prediction = target + (direction * distance);
 	}
 
+	prediction.Normalize();
 	return prediction;
 }
 
@@ -130,6 +131,21 @@ CVector CBoid::wanderDirectional(float distance, float radius, float visionAngle
 	//N (PF-P)
 
 	return projectedPoint;
+}
+
+CVector CBoid::followPath(CVector node, float force)
+{
+	CVector res = node - m_pos;
+	res.Normalize();
+	return res * force;
+}
+
+CVector CBoid::patrol(CVector node, float force)
+{
+	CVector res = node - m_pos;
+	res.Normalize();
+
+	return res * force;
 }
 
 void CBoid::setDirection(CVector newDirection)

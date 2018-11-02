@@ -1,5 +1,8 @@
 #pragma once
 #include "../Include/CGameObject.h"
+#include <iostream>
+#include <vector>
+
 
 
 class CBoid : public CGameObject
@@ -15,8 +18,8 @@ public:
 	CVector arrive(CVector target, float radius, float magnitude);
 	CVector wanderRandom(int Minimumx, int Minimumy, int Maximumx, int Maximumy, float magnitude);
 	CVector wanderDirectional(float distance, float radius, float visionAngle, float magitude);
-	CVector followPath();
-	CVector patrol();
+	CVector followPath(CVector node, float force);
+	CVector patrol(CVector node, float force);
 	
 	inline CVector getDirection() { return m_Dir; };
 	void setDirection(CVector newDirection);

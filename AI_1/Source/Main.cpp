@@ -2,6 +2,7 @@
 #include <iostream>
 #include "../Include/CBoid.h"
 #include "../Include/CVector.h"
+#include <vector>
 using namespace std;
 
 
@@ -27,7 +28,7 @@ int main()
 	//Boid_2 object
 	CBoid boid_2;
 	CVector StartDir_2(0.f, 1.f);
-	boid_2.setPosition(200.f, 200.f);
+	boid_2.setPosition(700.f, 500.f);
 	boid_2.setDirection(StartDir_2);
 
 	//Actor object
@@ -39,9 +40,10 @@ int main()
 	//Target object
 	sf::CircleShape target(20.f);
 	target.setFillColor(sf::Color::Red);
-	target.setPosition(500.f, 400.f);
+	target.setPosition(300.f, 400.f);
 	CVector targetVect(target.getPosition().x, target.getPosition().y);
 	target.setOrigin(20, 20);
+	
 
 	sf::CircleShape target_2(20.f);
 	target_2.setFillColor(sf::Color::Red);
@@ -50,6 +52,19 @@ int main()
 	target_2.setOrigin(20, 20);
 	float delta = 0.0f;
 	steeringForce = boid_1.wanderRandom(0, 0, 800, 600, seekForce);
+
+	//Follow path nodes 800x600
+	int i = 0;
+	std::vector<CVector> nodes;
+	CVector node_1(50, 50);
+	nodes.push_back(node_1);
+	CVector node_2(20, 150);
+	nodes.push_back(node_2);
+	CVector node_3(350, 120);
+	nodes.push_back(node_3);
+	CVector node_4(500, 220);
+	nodes.push_back(node_4);
+	steeringForce = boid_1.followPath(nodes[i], seekForce);
 
 	while (window.isOpen())
 	{
@@ -107,18 +122,54 @@ int main()
 		//steeringForce = boid_1.seek(boid_2.getPosition(), seekForce);
 		//steeringForce = boid_1.flee(targetVect, seekForce);
 		//steeringForce = boid_1.pursue(targetVect, seekForce);
-
-		if (delta >= 2.f)
-		{
-			delta = 0.0f;
-			steeringForce = boid_1.wanderRandom(0, 0, 800, 600, seekForce);
-		}
-
-		boid_1.Update(deltaTime, steeringForce);
+	
+		//if (delta >= 2.f)
+		//{
+		//	delta = 0.0f;
+		//	steeringForce = boid_1.wanderRandom(0, 0, 800, 600, seekForce);
+		//}
 
 
-		steeringForce_2 = boid_2.flee(boid_1.getPosition(), seekForce);
-		boid_2.Update(deltaTime, steeringForce_2);
+		//if (delta >= 2.f)
+		//{
+		//	if (i == nodes.size()-1)
+		//	{
+		//		steeringForce = boid_1.arrive(nodes[i], 10.f, seekForce);
+		//	}
+		//	else
+		//	{
+		//		delta = 0.0f;
+		//		steeringForce = boid_1.followPath(nodes[i], seekForce);
+		//		i++;
+		//	}
+		//	
+		//}
+
+		//if (delta >= 2.f)
+		//{
+		//	if (i == nodes.size() - 1)
+		//	{
+		//		delta = 0.0f;
+		//		i = 0;
+		//		steeringForce = boid_1.patrol(nodes[i], seekForce);
+		//		i++;
+		//	}
+		//	else
+		//	{
+		//		delta = 0.0f;
+		//		steeringForce = boid_1.patrol(nodes[i], seekForce);
+		//		i++;
+		//	}
+		//
+		//}
+
+			boid_1.Update(deltaTime, steeringForce);
+
+		
+
+
+		//steeringForce_2 = boid_2.pursue(boid_1.getPosition(), 50.f);
+		//boid_2.Update(deltaTime, steeringForce_2);
 
 	  /************************************************************************/
 		window.clear();
