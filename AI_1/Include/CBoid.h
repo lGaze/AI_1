@@ -13,7 +13,7 @@ public:
 	CVector pursue(CVector target, float time);
 	CVector evade(CVector target, float time);
 	CVector arrive(CVector target, float radius, float magnitude);
-	CVector wanderRandom(int Minimumx, int MAximumx, int Minimumy, int Maximumy, float magnitude);
+	CVector wanderRandom(int Minimumx, int Minimumy, int Maximumx, int Maximumy, float magnitude);
 	CVector wanderDirectional(float distance, float radius, float visionAngle, float magitude);
 	CVector followPath();
 	CVector patrol();

@@ -98,19 +98,21 @@ CVector CBoid::arrive(CVector target, float radius, float magnitude)
 	return direction;
 }
 
-CVector CBoid::wanderRandom(int Minimumx , int MAximumx , int Minimumy , int Maximumy ,float magnitude)
+CVector CBoid::wanderRandom(int Minimumx , int Minimumy , int Maximumx , int Maximumy ,float magnitude)
 {
-	std::default_random_engine generatorX;
-	std::default_random_engine generatorY;
-	std::uniform_int_distribution<int> valueX(Minimumx,MAximumx);
+	std::random_device rd;
+	std::mt19937 eng(rd());
+
+	std::uniform_int_distribution<int> valueX(Minimumx,Maximumx);
 	std::uniform_int_distribution<int> valueY(Minimumy,Maximumy);
 	
-	float Xvalue = valueX(generatorX);
-	float Yvalue = valueY(generatorY);
+	float Xvalue = valueX(eng);
+	float Yvalue = valueY(eng);
+
 	CVector target;
 	target.setValueX(Xvalue);
     target.setValueY(Yvalue);
-	target.getNormalize();
+
 	return seek(target,magnitude);
 
 }
