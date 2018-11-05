@@ -21,11 +21,19 @@ CVector CBoid::seek(CVector target, float seekForce)
 	return res * seekForce;
 }
 
-CVector CBoid::flee(CVector target, float fleeForce)
+CVector CBoid::flee(CVector target, float radius, float fleeForce)
 {
-	CVector res = m_pos - target;
-	res.Normalize();
-	return res * fleeForce;
+	CVector fleevec = m_pos - target;
+	float distance = (m_pos - target).magnitude();
+
+	if (distance < radius)
+	{
+		return fleevec * fleeForce;
+	}
+
+	CVector res(0, 0);
+	return res;
+
 }
 
 CVector CBoid::pursue(CVector target, float time)
@@ -86,17 +94,18 @@ CVector CBoid::evade(CVector target, float time)
 CVector CBoid::arrive(CVector target, float radius, float magnitude)
 {
 
-	CVector direction = (target - m_pos);
-	float distance = direction.magnitude();
-	direction.Normalize();
-	direction = direction * magnitude;
-
-	if (distance < radius)
+	CVector Arrive = seek(target, magnitude);
+	CVector distance = m_pos - target;
+	
+	if (distance.magnitude() < radius)
 	{
-		direction = direction * (distance / radius);
+		float arriveForce = 1.0f - distance.magnitude() / radius;
+		CVector negativeForce = (Arrive*-1) * arriveForce;
+		Arrive = Arrive + negativeForce;
 	}
 
-	return direction;
+
+	return Arrive;
 }
 
 CVector CBoid::wanderRandom(int Minimumx , int Minimumy , int Maximumx , int Maximumy ,float magnitude)
@@ -133,19 +142,93 @@ CVector CBoid::wanderDirectional(float distance, float radius, float visionAngle
 	return projectedPoint;
 }
 
-CVector CBoid::followPath(CVector node, float force)
+CVector CBoid::followPath(std::vector<CVector> nodes, float force)
 {
-	CVector res = node - m_pos;
-	res.Normalize();
-	return res * force;
+	CVector target = nodes[m_FollowPathCounter];
+	CVector followVec = target - m_pos;
+	float radius = 10.f;
+	float distance = followVec.magnitude();
+	followVec.Normalize();
+
+	if (distance < radius)
+	{
+		if (m_FollowPathCounter == nodes.size()-1)
+		{
+			followVec = arrive(target, radius, force);
+			return followVec;
+		}
+		else
+		{
+			m_FollowPathCounter++;
+		}
+	}
+	std::cout << m_FollowPathCounter << std::endl;
+	return followVec * force;
+
 }
 
-CVector CBoid::patrol(CVector node, float force)
+CVector CBoid::patrol(std::vector<CVector> nodes, bool circular, float force)
 {
-	CVector res = node - m_pos;
-	res.Normalize();
 
-	return res * force;
+	CVector target = nodes[m_PatolCounter];
+	CVector followVec = target - m_pos;
+	float radius = 10.f;
+	float distance = followVec.magnitude();
+	followVec.Normalize();
+
+	if (m_PatolCounter == nodes.size()-1)
+	{
+		m_finish = true;
+	}
+	else if (m_PatolCounter == 0)
+	{
+		m_finish = false;
+	}
+
+	if (!circular)
+	{
+		if (distance < radius)
+		{
+			if (m_finish == false)
+			{
+				m_PatolCounter++;
+			}
+			else
+			{
+				m_PatolCounter--;
+			}
+		}
+	}
+	else
+	{
+		if (distance < radius)
+		{
+			if (m_finish == false)
+			{
+				m_PatolCounter++;
+			}
+			else
+			{
+				m_PatolCounter = 0;
+			}
+		}
+	}
+	return followVec * force;
+}
+
+CVector CBoid::obstacleAvoidance(CVector target, CVector obstacle, float radius, float force)
+{
+	CVector vec = target - getPosition();
+	float distance = (obstacle - m_pos).magnitude();
+	if (distance < radius)
+	{
+		vec = flee(obstacle, radius, force);
+		return vec;
+	}
+	else
+	{
+		return vec;
+	}
 }
 
 void CBoid::setDirection(CVector newDirection)

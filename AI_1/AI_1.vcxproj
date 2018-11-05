@@ -122,11 +122,13 @@
   <ItemGroup>
     <ClInclude Include="Include\CBoid.h" />
     <ClInclude Include="Include\CGameObject.h" />
+    <ClInclude Include="Include\CProgram.h" />
     <ClInclude Include="Include\CVector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\CBoid.cpp" />
     <ClCompile Include="Source\CGameObject.cpp" />
+    <ClCompile Include="Source\CProgram.cpp" />
     <ClCompile Include="Source\CVector.cpp" />
     <ClCompile Include="Source\Main.cpp" />
   </ItemGroup>

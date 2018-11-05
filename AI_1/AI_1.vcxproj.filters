@@ -24,6 +24,9 @@
     <ClInclude Include="Include\CGameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\CProgram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\CBoid.cpp">
@@ -36,6 +39,9 @@
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

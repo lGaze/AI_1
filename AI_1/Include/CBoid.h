@@ -12,18 +12,20 @@ public:
 	CBoid();
 	~CBoid();
 	CVector seek(CVector target, float seekForce);
-	CVector flee(CVector target, float fleeForce);
+	CVector flee(CVector target, float raduis, float fleeForce);
 	CVector pursue(CVector target, float time);
-	CVector evade(CVector target, float time);
 	CVector arrive(CVector target, float radius, float magnitude);
+	CVector evade(CVector target, float time);
 	CVector wanderRandom(int Minimumx, int Minimumy, int Maximumx, int Maximumy, float magnitude);
 	CVector wanderDirectional(float distance, float radius, float visionAngle, float magitude);
-	CVector followPath(CVector node, float force);
-	CVector patrol(CVector node, float force);
-	
+	CVector followPath(std::vector<CVector> nodes, float force);
+	CVector patrol(std::vector<CVector> nodes, bool circular, float force);
+	CVector obstacleAvoidance(CVector target, CVector obstacle, float raiud, float force);
+
 	inline CVector getDirection() { return m_Dir; };
 	void setDirection(CVector newDirection);
 	void Update(float deltaTime, CVector steeringForce);
+
 
 #ifdef SFML_GRAPHICS_API
 	void Draw(sf::RenderWindow &window,sf::CircleShape actor)
@@ -45,4 +47,7 @@ private:
 
 	CVector m_Dir;
 	float m_Velocity = 20.f;
+	int m_FollowPathCounter = 0;
+	int m_PatolCounter = 0;
+	bool m_finish = false;
 };
