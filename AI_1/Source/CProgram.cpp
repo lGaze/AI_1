@@ -1082,7 +1082,7 @@ void CProgram::obstacleAvoidanceScene()
 	//Boid_1 object
 	CBoid boid_1;
 	CVector StartDir(1.f, 1.f);
-	boid_1.setPosition(100.f, 525.f);
+	boid_1.setPosition(100.f, 500.f);
 	boid_1.setDirection(StartDir);
 
 	//Actor object
@@ -1146,9 +1146,12 @@ void CProgram::obstacleAvoidanceScene()
 
 		float deltaTime = clock.restart().asSeconds();
 		delta += deltaTime;
-		/********************************UPDATE**********************************/
 
-		steeringForce = boid_1.obstacleAvoidance(targetVect, obstacleVec, 50.f, seekForce);
+		/********************************UPDATE**********************************/
+		
+		steeringForce = boid_1.obstacleAvoidance(obstacleVec, 50.f);
+		boid_1.Update(deltaTime, steeringForce);
+		steeringForce = boid_1.arrive(targetVect, 20.f, seekForce);
 		boid_1.Update(deltaTime, steeringForce);
 
 		/************************************************************************/

@@ -20,7 +20,7 @@ public:
 	CVector wanderDirectional(float distance, float radius, float visionAngle, float magitude);
 	CVector followPath(std::vector<CVector> nodes, float force);
 	CVector patrol(std::vector<CVector> nodes, bool circular, float force);
-	CVector obstacleAvoidance(CVector target, CVector obstacle, float raiud, float force);
+	CVector obstacleAvoidance(CVector obstacle, float radius);
 
 	inline CVector getDirection() { return m_Dir; };
 	void setDirection(CVector newDirection);

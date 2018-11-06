@@ -94,18 +94,16 @@ CVector CBoid::evade(CVector target, float time)
 CVector CBoid::arrive(CVector target, float radius, float magnitude)
 {
 
-	CVector Arrive = seek(target, magnitude);
-	CVector distance = m_pos - target;
+	CVector arriveVec = (target - m_pos);
+	float distance = arriveVec.magnitude();
 	
-	if (distance.magnitude() < radius)
+	if (distance < radius)
 	{
-		float arriveForce = 1.0f - distance.magnitude() / radius;
-		CVector negativeForce = (Arrive*-1) * arriveForce;
-		Arrive = Arrive + negativeForce;
+		return arriveVec = arriveVec * (distance / radius);
 	}
 
 
-	return Arrive;
+	return arriveVec * magnitude;
 }
 
 CVector CBoid::wanderRandom(int Minimumx , int Minimumy , int Maximumx , int Maximumy ,float magnitude)
@@ -216,19 +214,17 @@ CVector CBoid::patrol(std::vector<CVector> nodes, bool circular, float force)
 	return followVec * force;
 }
 
-CVector CBoid::obstacleAvoidance(CVector target, CVector obstacle, float radius, float force)
+CVector CBoid::obstacleAvoidance(CVector obstacle, float radius)
 {
-	CVector vec = target - getPosition();
-	float distance = (obstacle - m_pos).magnitude();
+	CVector newDir = obstacle - m_pos;
+	float distance = newDir.magnitude();
 	if (distance < radius)
 	{
-		vec = flee(obstacle, radius, force);
-		return vec;
+		return newDir = newDir * -1000;
 	}
-	else
-	{
-		return vec;
-	}
+
+	CVector vecZ (0.f, 0.f);
+	return vecZ;
 }
 
 void CBoid::setDirection(CVector newDirection)
