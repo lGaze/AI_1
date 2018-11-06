@@ -13,10 +13,11 @@ void CProgram::run()
 {
 
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Behaviours");
-	sf::RectangleShape rectangle(sf::Vector2f(900, 200));
-	rectangle.setFillColor(sf::Color(153, 153, 153));
-	rectangle.setPosition(960.f, 540.f);
-	rectangle.setOrigin(480.f, 270.f);
+	
+	sf::RectangleShape rectangle(sf::Vector2f(1920, 1080));
+	rectangle.setFillColor(sf::Color(15, 84, 61));
+	rectangle.setPosition(0, 0);
+	rectangle.setOrigin(0, 0);
 
 	sf::Font font;
 	if (!font.loadFromFile("C:/Proyectos/AI_1/AI_1/A.Casual.Handwritten.Pen.Noncommercial.ttf"))
@@ -37,7 +38,7 @@ void CProgram::run()
 
 	// set the color
 	text.setFillColor(sf::Color::White);
-	text.setPosition(840.f, 300.f);
+	text.setPosition(840.f, 50.f);
 
 	sf::Text txt;
 	
@@ -45,7 +46,7 @@ void CProgram::run()
 	txt.setString("Press 1 to see SEEK\nPress 2 to see FLEE\nPress 3 to see ARRIVE\nPress 4 to see PATROL\nPress 5 to see FOLLOW PATH\nPress 6 to see WANDER RANDOM\nPress 7 to see OBSTACLE AVOIDANCE\nPress 8 to see PURSUE");
 	txt.setCharacterSize(50);
 	txt.setFillColor(sf::Color::White);
-	txt.setPosition(500.f, 500.f);
+	txt.setPosition(500.f, 400.f);
 
 
 	while (window.isOpen())
@@ -397,7 +398,7 @@ void CProgram::fleeScene()
 
 
 		/********************************UPDATE**********************************/
-
+		boid_1.m_Velocity = 200.f;
 		steeringForce = boid_1.flee(targetVect, 300, fleeForce);
 		boid_1.Update(deltaTime, steeringForce);
 
@@ -677,7 +678,7 @@ void CProgram::pursueScene()
 		steeringForce = boid_1.seek(targetVect, purseForce);
 		boid_1.Update(deltaTime, steeringForce);
 
-		steeringForce2 = boid_2.pursue(boid_1, 10.f, 50.f, purseForce);
+		steeringForce2 = boid_2.pursue(boid_1, 100.f, 50.f, purseForce);
 		boid_2.Update(deltaTime, steeringForce2);
 
 		/************************************************************************/
@@ -863,7 +864,7 @@ void CProgram::patrolScene()
 
 
 		/********************************UPDATE**********************************/
-
+		boid_1.m_Velocity = 150.f;
 		steeringForce = boid_1.patrol(nodes, false, patrolForce);
 		boid_1.Update(deltaTime, steeringForce);
 
@@ -1050,7 +1051,6 @@ void CProgram::followPathScene()
 
 
 		/********************************UPDATE**********************************/
-
 		steeringForce = boid_1.followPath(nodes, seekForce);
 		boid_1.Update(deltaTime, steeringForce);
 
@@ -1285,7 +1285,7 @@ void CProgram::obstacleAvoidanceScene()
 
 		/********************************DRAW************************************/
 		window.draw(text);
-		window.draw(obstacleRadius);
+		//window.draw(obstacleRadius);
 		window.draw(Obstacle);
 		window.draw(target);
 		boid_1.Draw(window, actor);

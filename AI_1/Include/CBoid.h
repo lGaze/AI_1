@@ -43,10 +43,11 @@ public:
 	}
 #endif
 
+	float m_Velocity = 20.f;
+
 private:
 
 	CVector m_Dir;
-	float m_Velocity = 20.f;
 	int m_FollowPathCounter = 0;
 	int m_PatolCounter = 0;
 	bool m_finish = false;

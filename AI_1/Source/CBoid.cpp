@@ -209,7 +209,7 @@ CVector CBoid::obstacleAvoidance(CVector obstacle, float radius)
 	float distance = newDir.magnitude();
 	if (distance < radius)
 	{
-		return newDir = newDir * -1000;
+		return newDir = (newDir * -1) * 1000;
 	}
 
 	CVector vecZ (0.f, 0.f);
