@@ -13,7 +13,7 @@ public:
 	~CBoid();
 	CVector seek(CVector target, float seekForce);
 	CVector flee(CVector target, float raduis, float fleeForce);
-	CVector pursue(CVector target, float time);
+	CVector pursue(CBoid target, float time, float radius, float force);
 	CVector arrive(CVector target, float radius, float magnitude);
 	CVector evade(CVector target, float time);
 	CVector wanderRandom(int Minimumx, int Minimumy, int Maximumx, int Maximumy, float magnitude);

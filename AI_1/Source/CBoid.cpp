@@ -36,30 +36,19 @@ CVector CBoid::flee(CVector target, float radius, float fleeForce)
 
 }
 
-CVector CBoid::pursue(CVector target, float time)
+CVector CBoid::pursue(CBoid target, float time, float radius, float force)
 {
-	CVector prediction;
-	CVector direction;
-	float distance = 0;
-	float velocity = 0;
-	float magnitudMaxima = 0;
+	CVector newDir = target.getPosition() - m_pos;
+	CVector vel = target.getDirection() * target.m_Velocity;
+	float distance = newDir.magnitude();
 
-	direction = target - getPosition();
-	distance = direction.magnitude();
-	velocity = distance / time;
-	magnitudMaxima = velocity * time;
+	CVector pred = target.getPosition() + vel * time;
 
-	if (distance > magnitudMaxima)
+	if (distance < radius)
 	{
-		prediction = target + (direction * magnitudMaxima);
+		return seek(pred, force);
 	}
-	else
-	{
-		prediction = target + (direction * distance);
-	}
-
-	prediction.Normalize();
-	return prediction;
+	return seek(target.getPosition(), force);
 }
 
 CVector CBoid::evade(CVector target, float time)

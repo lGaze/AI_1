@@ -12,7 +12,6 @@ CProgram::~CProgram()
 void CProgram::run()
 {
 
-
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Behaviours");
 	sf::RectangleShape rectangle(sf::Vector2f(900, 200));
 	rectangle.setFillColor(sf::Color(153, 153, 153));
@@ -43,7 +42,7 @@ void CProgram::run()
 	sf::Text txt;
 	
 	txt.setFont(font);
-	txt.setString("Press 1 to see SEEK\nPress 2 to see FLEE\nPress 3 to see ARRIVE\nPress 4 to see PATROL\nPress 5 to see FOLLOW PATH\nPress 6 to see WANDER RANDOM\nPress 7 to see OBSTACLE AVOIDANCE");
+	txt.setString("Press 1 to see SEEK\nPress 2 to see FLEE\nPress 3 to see ARRIVE\nPress 4 to see PATROL\nPress 5 to see FOLLOW PATH\nPress 6 to see WANDER RANDOM\nPress 7 to see OBSTACLE AVOIDANCE\nPress 8 to see PURSUE");
 	txt.setCharacterSize(50);
 	txt.setFillColor(sf::Color::White);
 	txt.setPosition(500.f, 500.f);
@@ -93,6 +92,10 @@ void CProgram::run()
 		{
 			obstacleAvoidanceScene();
 		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
+		{
+			pursueScene();
+		}
 
 		window.clear();
 		window.draw(rectangle);
@@ -101,6 +104,7 @@ void CProgram::run()
 		window.display();
 
 	}
+	
 }
 
 void CProgram::seekScene()
@@ -286,7 +290,7 @@ void CProgram::fleeScene()
 
 	//Forces
 	CVector steeringForce;
-	float seekForce = 10.f;
+	float fleeForce = 10.f;
 
 	//Boid_1 object
 	CBoid boid_1;
@@ -394,7 +398,7 @@ void CProgram::fleeScene()
 
 		/********************************UPDATE**********************************/
 
-		steeringForce = boid_1.flee(targetVect, 300, seekForce);
+		steeringForce = boid_1.flee(targetVect, 300, fleeForce);
 		boid_1.Update(deltaTime, steeringForce);
 
 		/************************************************************************/
@@ -566,6 +570,128 @@ void CProgram::arriveScene()
 
 void CProgram::pursueScene()
 {
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Pursue");
+
+	sf::Font font;
+	if (!font.loadFromFile("C:/Proyectos/AI_1/AI_1/A.Casual.Handwritten.Pen.Noncommercial.ttf"))
+	{
+		std::cout << "error" << std::endl;
+	}
+	sf::Text text;
+
+	// select the font
+	text.setFont(font);
+
+	// set the string to display
+	text.setString("PRESS ESC TO RETURN");
+
+	// set the character size
+	text.setCharacterSize(50);
+
+	// set the color
+	text.setFillColor(sf::Color::White);
+	text.setPosition(1550.f, 20.f);
+
+	//Clock for delta time
+	sf::Clock clock;
+
+	//Forces
+	CVector steeringForce;
+	CVector steeringForce2;
+	float purseForce = 10.f;
+
+	//Boid_1 object
+	CBoid boid_1;
+	CVector StartDir(1.f, 1.f);
+	boid_1.setPosition(400.f, 500.f);
+	boid_1.setDirection(StartDir);
+
+	//Actor object
+	sf::CircleShape actor(10.f);
+	actor.setFillColor(sf::Color::Green);
+	actor.setPosition(boid_1.getPosition().X, boid_1.getPosition().Y);
+	actor.setOrigin(sf::Vector2f(10.f, 10.f));
+	//Actor Radius
+	sf::CircleShape actorRadius(100.f);
+	actorRadius.setFillColor(sf::Color::Black);
+	actorRadius.setOutlineColor(sf::Color::White);
+	actorRadius.setOutlineThickness(3.f);
+	actorRadius.setPosition(boid_1.getPosition().X, boid_1.getPosition().Y);
+	actorRadius.setOrigin(100.f, 100.f);
+
+	//Target object
+	sf::CircleShape target(20.f);
+	target.setFillColor(sf::Color::Red);
+	target.setPosition(1520.f, 500.f);
+	CVector targetVect(target.getPosition().x, target.getPosition().y);
+	target.setOrigin(20, 20);
+	//Target Radius
+	sf::CircleShape targetRadius(200.f);
+	targetRadius.setFillColor(sf::Color::Black);
+	targetRadius.setOutlineColor(sf::Color::Black);
+	targetRadius.setOutlineThickness(3.f);
+	targetRadius.setPosition(920.f, 500.f);
+	targetRadius.setOrigin(200.f, 200.f);
+	CVector targetRadiusVec(targetRadius.getPosition().x, targetRadius.getPosition().y);
+
+	//Boid_2 object
+	CBoid boid_2;
+	CVector StartDir2(0.f, 1.f);
+	boid_2.setPosition(700.f, 800.f);
+	boid_2.setDirection(StartDir2);
+
+	//Actor object2
+	sf::CircleShape actor2(10.f);
+	actor2.setFillColor(sf::Color::Green);
+	actor2.setPosition(boid_2.getPosition().X, boid_2.getPosition().Y);
+	actor2.setOrigin(sf::Vector2f(10.f, 10.f));
+
+
+	while (window.isOpen())
+	{
+		//Events
+		sf::Event event;
+
+		//Program Loop
+		while (window.pollEvent(event))
+		{
+			//Close Event
+			if (event.type == sf::Event::Closed)
+			{
+				window.close();
+			}
+
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		{
+			window.close();
+		}
+
+		float deltaTime = clock.restart().asSeconds();
+
+
+
+		/********************************UPDATE**********************************/
+
+		steeringForce = boid_1.seek(targetVect, purseForce);
+		boid_1.Update(deltaTime, steeringForce);
+
+		steeringForce2 = boid_2.pursue(boid_1, 10.f, 50.f, purseForce);
+		boid_2.Update(deltaTime, steeringForce2);
+
+		/************************************************************************/
+		window.clear();
+
+		/********************************DRAW************************************/
+		window.draw(text);
+		window.draw(target);
+		boid_1.Draw(window, actor);
+		boid_2.Draw(window, actor2);
+
+		/************************************************************************/
+		window.display();
+	}
 }
 
 void CProgram::patrolScene()
@@ -599,7 +725,7 @@ void CProgram::patrolScene()
 
 	//Forces
 	CVector steeringForce;
-	float seekForce = 10.f;
+	float patrolForce = 10.f;
 
 	//Boid_1 object
 	CBoid boid_1;
@@ -738,7 +864,7 @@ void CProgram::patrolScene()
 
 		/********************************UPDATE**********************************/
 
-		steeringForce = boid_1.patrol(nodes, false, seekForce);
+		steeringForce = boid_1.patrol(nodes, false, patrolForce);
 		boid_1.Update(deltaTime, steeringForce);
 
 		/************************************************************************/
